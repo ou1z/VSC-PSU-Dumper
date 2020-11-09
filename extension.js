@@ -55,7 +55,6 @@ function activate(context) {
 			if (lastbreak - index < dindex && lastbreak - index > 0) {
 				dindex = lastbreak - index
 				deserializer = match
-				console.log("NEW DESERIALIZER: " + match)
 			}
 			
 		})
