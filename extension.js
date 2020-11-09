@@ -46,8 +46,22 @@ function activate(context) {
 		})
 	
 
-		let deserializer = script.substring(script.lastIndexOf('break')-26, script.lastIndexOf('break')-18)
+		let deserializer
+		let dindex = 99999;
+		let regex = /\w\[\w\] = \w;/g
+		let lastbreak = script.lastIndexOf('break')
+		script.replace(regex, function(match, index) {
+
+			if (lastbreak - index < dindex && lastbreak - index > 0) {
+				dindex = lastbreak - index
+				deserializer = match
+				console.log("NEW DESERIALIZER: " + match)
+			}
+			
+		})
 		let newscript = replaceAll(script, deserializer, deserializer + `print(${deserializer.charAt(deserializer.length-2)})`)
+
+
 
 		fs.writeFileSync('./runscript.lua', newscript)
 		exec('lua ./runscript.lua', (err,stdout,stderr) => {
